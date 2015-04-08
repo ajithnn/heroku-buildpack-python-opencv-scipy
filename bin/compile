@@ -55,11 +55,11 @@ cd $BUILD_DIR
 
 title "Creating virtual environment"
 
-virtualenv --always-copy /app/.heroku/python
+virtualenv --always-copy /app/heroku/python
 
 title "installing numpy"
 
-/app/.heroku/python/bin/easy_install numpy
+/app/heroku/python/bin/easy_install numpy
 
 unset ATLAS BLAS LAPACK LD_LIBRARY_PATH PATH PYTHONPATH
 export LD_LIBRARY_PATH="$BUILD_DIR/heroku/python/lib/:$BUILD_DIR/heroku/vendor/lib:$BUILD_DIR/heroku/vendor/lib/atlas-base:$BUILD_DIR/heroku/vendor/lib/atlas-base/atlas"
