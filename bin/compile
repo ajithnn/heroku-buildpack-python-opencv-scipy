@@ -66,11 +66,12 @@ export PYTHONPATH="$BUILD_DIR/.heroku/python/lib/python2.7/site-packages/:$BUILD
 # Setup environment
 if [ ! -f $CACHE_DIR/env.tar.gz ]; then
 	subtitle "Fetching..."
-	curl -s -L "https://www.dropbox.com/s/9tykps6gw8rnxg3/pycv.tar.gz?dl=1"
+	curl -L -o py.tar.gz "https://dl.dropboxusercontent.com/s/9tykps6gw8rnxg3/pycv.tar.gz"
 fi
 subtitle "Unpacking..."
-tar -xzf $CACHE_DIR/env.tar.gz -C $BUILD_DIR
+tar -xzf py.tar.gz -C $BUILD_DIR
 
+rm -rf py.tar.gz
 
 # installing application dependencies
 if [ -f $BUILD_DIR/requirements.txt ]; then
