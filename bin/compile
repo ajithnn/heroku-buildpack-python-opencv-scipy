@@ -12,12 +12,6 @@ subtitle() {
 ###################################
 shopt -s extglob
 
-if [ $(uname) == Darwin ]; then
-    sed() { command sed -l "$@"; }
-else
-    sed() { command sed -u "$@"; }
-fi
-
 # Does some serious copying.
 deep-cp() {
   declare source="$1" target="$2"
@@ -61,6 +55,12 @@ cd $BUILD_DIR
 
 title "Creating virtual environment"
 
+virtualenv --always-copy /app/.heroku/python
+
+title "installing numpy"
+
+/app/.heroku/python/bin/easy_install numpy
+
 unset ATLAS BLAS LAPACK LD_LIBRARY_PATH PATH PYTHONPATH
 export LD_LIBRARY_PATH="$BUILD_DIR/heroku/python/lib/:$BUILD_DIR/heroku/vendor/lib:$BUILD_DIR/heroku/vendor/lib/atlas-base:$BUILD_DIR/heroku/vendor/lib/atlas-base/atlas"
 export PATH="$BUILD_DIR/heroku/python/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
@@ -75,12 +75,6 @@ subtitle "Unpacking..."
 tar -xzf py.tar.gz -C $BUILD_DIR
 
 rm -rf py.tar.gz
-
-# installing application dependencies
-if [ -f $BUILD_DIR/requirements.txt ]; then
-	title "Found requirements.txt, installing dependencies using pip"
-	$BUILD_DIR/heroku/python/bin/pip install numpy --exists-action=w --src=./heroku/src --allow-all-external
-fi
 
 # creating env variables
 title "Creating environment variables."
