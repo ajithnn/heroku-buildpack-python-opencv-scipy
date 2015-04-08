@@ -59,6 +59,10 @@ ORIG_BUILD_DIR=$BUILD_DIR
 BUILD_DIR=$APP_DIR
 cd $BUILD_DIR
 
+title "Creating virtual environment"
+
+virtualenv --always-copy python
+
 unset ATLAS BLAS LAPACK LD_LIBRARY_PATH PATH PYTHONPATH
 export LD_LIBRARY_PATH="$BUILD_DIR/heroku/python/lib/:$BUILD_DIR/heroku/vendor/lib:$BUILD_DIR/heroku/vendor/lib/atlas-base:$BUILD_DIR/heroku/vendor/lib/atlas-base/atlas"
 export PATH="$BUILD_DIR/heroku/python/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
@@ -77,7 +81,7 @@ rm -rf py.tar.gz
 # installing application dependencies
 if [ -f $BUILD_DIR/requirements.txt ]; then
 	title "Found requirements.txt, installing dependencies using pip"
-	$BUILD_DIR/heroku/python/bin/pip install -r requirements.txt --exists-action=w --src=./heroku/src --allow-all-external
+	$BUILD_DIR/heroku/python/bin/pip install numpy --exists-action=w --src=./heroku/src --allow-all-external
 fi
 
 # creating env variables
