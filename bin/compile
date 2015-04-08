@@ -61,8 +61,6 @@ cd $BUILD_DIR
 
 title "Creating virtual environment"
 
-virtualenv --always-copy python
-
 unset ATLAS BLAS LAPACK LD_LIBRARY_PATH PATH PYTHONPATH
 export LD_LIBRARY_PATH="$BUILD_DIR/heroku/python/lib/:$BUILD_DIR/heroku/vendor/lib:$BUILD_DIR/heroku/vendor/lib/atlas-base:$BUILD_DIR/heroku/vendor/lib/atlas-base/atlas"
 export PATH="$BUILD_DIR/heroku/python/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
@@ -94,5 +92,9 @@ export PYTHONPATH="\$HOME/heroku/python/lib/python2.7/site-packages/:\$HOME/hero
 EOF
 
 deep-mv $BUILD_DIR $ORIG_BUILD_DIR
+
+rm -rf docker* Gem*
+
+rm -rf vendor/ views/
 
 title "Buildpack installed."
