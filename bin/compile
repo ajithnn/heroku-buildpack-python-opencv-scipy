@@ -40,10 +40,15 @@ cd $BUILD_DIR
 title "Creating environment variables."
 #mkdir -p $BUILD_DIR/.profile.d
 #cat <<EOF >$BUILD_DIR/.profile.d/5251124.sh
-export LD_LIBRARY_PATH="/app/.heroku/python/lib/:/app/vendor/lib:/app/vendor/lib/atlas-base:/app/vendor/lib/atlas-base/atlas:\$LD_LIBRARY_PATH"
-export PATH="/app/heroku/python/bin"
-export PYTHONPATH="/app/heroku/python/lib/python2.7/site-packages/:/app/vendor/lib/python2.7/site-packages/"
+unset ATLAS BLAS LAPACK LD_LIBRARY_PATH PATH PYTHONPATH
+export LD_LIBRARY_PATH="/app/.heroku/python/lib/:/app/vendor/lib:/app/vendor/lib/atlas-base:/app/vendor/lib/atlas-base/atlas"
+export PATH="/app/.heroku/python/bin"
+export PYTHONPATH="/app/.heroku/python/lib/python2.7/site-packages/:/app/vendor/lib/python2.7/site-packages/"
 #EOF
+
+echo $LD_LIBRARY_PATH
+echo $PATH
+echo $PYTHONPATH
 
 #deep-mv $BUILD_DIR $ORIG_BUILD_DIR
 
