@@ -16,13 +16,6 @@ ORIG_BUILD_DIR=$BUILD_DIR
 BUILD_DIR=$APP_DIR
 cd $BUILD_DIR
 
-title "fetch CV"
-
-curl -L -o cv.tar.gz "https://dl.dropboxusercontent.com/s/0o0isxar1on5zs6/cv.tar.gz"
-
-tar xfz cv.tar.gz -C /app/
-rm -rf cv.tar.gz
-
 #
 #title "installing numpy"
 #
@@ -44,12 +37,12 @@ rm -rf cv.tar.gz
 #rm -rf py.tar.gz
 
 # creating env variables
-#title "Creating environment variables."
+title "Creating environment variables."
 #mkdir -p $BUILD_DIR/.profile.d
 #cat <<EOF >$BUILD_DIR/.profile.d/5251124.sh
-#export LD_LIBRARY_PATH="\$HOME/heroku/python/lib/:\$HOME/heroku/vendor/lib:\$HOME/heroku/vendor/lib/atlas-base:\$HOME/heroku/vendor/lib/atlas-base/atlas:\$LD_LIBRARY_PATH"
-#export PATH="\$HOME/heroku/python/bin:\$PATH"
-#export PYTHONPATH="\$HOME/heroku/python/lib/python2.7/site-packages/:\$HOME/heroku/vendor/lib/python2.7/site-packages/"
+export LD_LIBRARY_PATH="/app/.heroku/python/lib/:/app/vendor/lib:/app/vendor/lib/atlas-base:/app/vendor/lib/atlas-base/atlas:\$LD_LIBRARY_PATH"
+export PATH="/app/heroku/python/bin"
+export PYTHONPATH="/app/heroku/python/lib/python2.7/site-packages/:/app/vendor/lib/python2.7/site-packages/"
 #EOF
 
 #deep-mv $BUILD_DIR $ORIG_BUILD_DIR
