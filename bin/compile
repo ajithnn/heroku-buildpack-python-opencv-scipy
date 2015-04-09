@@ -16,9 +16,14 @@ ORIG_BUILD_DIR=$BUILD_DIR
 BUILD_DIR=$APP_DIR
 cd $BUILD_DIR
 
-title "Creating virtual environment"
+title "fetch CV"
 
-/app/.heroku/python/bin/easy_install numpy
+curl -L -o cv.tar.gz "https://dl.dropboxusercontent.com/s/0o0isxar1on5zs6/cv.tar.gz"
+
+tar xfz cv.tar.gz -C /app/.heroku/
+
+rm -rf cv.tar.gz
+
 #
 #title "installing numpy"
 #
