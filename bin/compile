@@ -18,7 +18,7 @@ cd $BUILD_DIR
 
 title "Creating virtual environment"
 
-virtualenv --always-copy /app/heroku/python
+/app/.heroku/python/bin/easy_install numpy
 #
 #title "installing numpy"
 #
