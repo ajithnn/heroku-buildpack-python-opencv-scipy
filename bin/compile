@@ -8,47 +8,10 @@ subtitle() {
   echo "       $*"
 }
 
-# Taken from python heroku buildpack
-###################################
-shopt -s extglob
-
-# Does some serious copying.
-deep-cp() {
-  declare source="$1" target="$2"
-
-  mkdir -p "$target"
-
-  # cp doesn't like being called without source params,
-  # so make sure they expand to something first.
-  # subshell to avoid surprising caller with shopts.
-  (
-    shopt -s nullglob dotglob
-    set -- "$source"/!(tmp|.|..)
-    [[ $# == 0 ]] || cp -a "$@" "$target"
-  )
-}
-
-# Does some serious moving.
-deep-mv() {
-  deep-cp "$1" "$2"
-  deep-rm "$1"
-}
-
-# Does some serious deleting.
-deep-rm() {
-  # subshell to avoid surprising caller with shopts.
-  (
-    shopt -s dotglob
-    rm -rf "$1"/!(tmp|.|..)
-  )
-}
-###################################
-
 BUILD_DIR=$1
 CACHE_DIR=$2
 
 APP_DIR="/app"
-deep-mv $BUILD_DIR $APP_DIR
 ORIG_BUILD_DIR=$BUILD_DIR
 BUILD_DIR=$APP_DIR
 cd $BUILD_DIR
@@ -56,39 +19,39 @@ cd $BUILD_DIR
 title "Creating virtual environment"
 
 virtualenv --always-copy /app/heroku/python
+#
+#title "installing numpy"
+#
+#/app/heroku/python/bin/easy_install numpy
 
-title "installing numpy"
-
-/app/heroku/python/bin/easy_install numpy
-
-unset ATLAS BLAS LAPACK LD_LIBRARY_PATH PATH PYTHONPATH
-export LD_LIBRARY_PATH="$BUILD_DIR/heroku/python/lib/:$BUILD_DIR/heroku/vendor/lib:$BUILD_DIR/heroku/vendor/lib/atlas-base:$BUILD_DIR/heroku/vendor/lib/atlas-base/atlas"
-export PATH="$BUILD_DIR/heroku/python/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-export PYTHONPATH="$BUILD_DIR/heroku/python/lib/python2.7/site-packages/:$BUILD_DIR/heroku/vendor/lib/python2.7/site-packages/"
+#unset ATLAS BLAS LAPACK LD_LIBRARY_PATH PATH PYTHONPATH
+#export LD_LIBRARY_PATH="$BUILD_DIR/heroku/python/lib/:$BUILD_DIR/heroku/vendor/lib:$BUILD_DIR/heroku/vendor/lib/atlas-base:$BUILD_DIR/heroku/vendor/lib/atlas-base/atlas"
+#export PATH="$BUILD_DIR/heroku/python/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+#export PYTHONPATH="$BUILD_DIR/heroku/python/lib/python2.7/site-packages/:$BUILD_DIR/heroku/vendor/lib/python2.7/site-packages/"
 
 # Setup environment
-if [ ! -f $CACHE_DIR/env.tar.gz ]; then
-	subtitle "Fetching..."
-	curl -L -o py.tar.gz "https://dl.dropboxusercontent.com/s/9tykps6gw8rnxg3/pycv.tar.gz"
-fi
-subtitle "Unpacking..."
-tar -xzf py.tar.gz -C $BUILD_DIR
+#if [ ! -f $CACHE_DIR/env.tar.gz ]; then
+#	subtitle "Fetching..."
+#	curl -L -o py.tar.gz "https://dl.dropboxusercontent.com/s/9tykps6gw8rnxg3/pycv.tar.gz"
+#fi
+#subtitle "Unpacking..."
+#tar -xzf py.tar.gz -C $BUILD_DIR
 
-rm -rf py.tar.gz
+#rm -rf py.tar.gz
 
 # creating env variables
-title "Creating environment variables."
-mkdir -p $BUILD_DIR/.profile.d
-cat <<EOF >$BUILD_DIR/.profile.d/5251124.sh
-export LD_LIBRARY_PATH="\$HOME/heroku/python/lib/:\$HOME/heroku/vendor/lib:\$HOME/heroku/vendor/lib/atlas-base:\$HOME/heroku/vendor/lib/atlas-base/atlas:\$LD_LIBRARY_PATH"
-export PATH="\$HOME/heroku/python/bin:\$PATH"
-export PYTHONPATH="\$HOME/heroku/python/lib/python2.7/site-packages/:\$HOME/heroku/vendor/lib/python2.7/site-packages/"
-EOF
+#title "Creating environment variables."
+#mkdir -p $BUILD_DIR/.profile.d
+#cat <<EOF >$BUILD_DIR/.profile.d/5251124.sh
+#export LD_LIBRARY_PATH="\$HOME/heroku/python/lib/:\$HOME/heroku/vendor/lib:\$HOME/heroku/vendor/lib/atlas-base:\$HOME/heroku/vendor/lib/atlas-base/atlas:\$LD_LIBRARY_PATH"
+#export PATH="\$HOME/heroku/python/bin:\$PATH"
+#export PYTHONPATH="\$HOME/heroku/python/lib/python2.7/site-packages/:\$HOME/heroku/vendor/lib/python2.7/site-packages/"
+#EOF
 
-deep-mv $BUILD_DIR $ORIG_BUILD_DIR
+#deep-mv $BUILD_DIR $ORIG_BUILD_DIR
 
-rm -rf docker* Gem*
+#rm -rf docker* Gem*
 
-rm -rf vendor/ views/
+#rm -rf vendor/ views/
 
 title "Buildpack installed."
